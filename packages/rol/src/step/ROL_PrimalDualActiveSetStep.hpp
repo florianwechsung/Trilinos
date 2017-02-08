@@ -345,8 +345,8 @@ public:
     algo_state.gnorm = computeCriticalityMeasure(x,obj,con,tol);
     algo_state.ngrad++;
     // Initialize dual variable
-    lambda_ = s.clone(); 
-    lambda_->set((step_state->gradientVec)->dual());
+    lambda_ = g.clone(); 
+    lambda_->set(*(step_state->gradientVec));
     lambda_->scale(-one);
     //con.setVectorToLowerBound(*lambda_);
   }
@@ -388,7 +388,7 @@ public:
       // MODIFY ITERATE VECTOR TO CHECK ACTIVE SET
       /********************************************************************/
       xlam_->set(*x0_);                          // xlam = x0
-      xlam_->axpy(scale_,*(lambda_));            // xlam = x0 + c*lambda
+      xlam_->axpy(scale_,lambda_->dual());            // xlam = x0 + c*lambda
       /********************************************************************/
       // PROJECT x ONTO PRIMAL DUAL FEASIBLE SET
       /********************************************************************/
